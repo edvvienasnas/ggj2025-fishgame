@@ -14,6 +14,10 @@ public class Boss : MonoBehaviour
     [SerializeField] float attackTimer = 3;
     private float timeToAttack;
 
+    private int slowAttacks;
+    private int fastAttacks;
+    private int manyAttacks;
+
     private void Start()
     {
         timeToAttack = attackTimer;
@@ -27,7 +31,39 @@ public class Boss : MonoBehaviour
         timeToAttack -= Time.deltaTime;
         if (timeToAttack <= 0) 
         {
-            Attack();
+            if (slowAttacks < 4)
+            {
+                Attack();
+                slowAttacks++;
+            }
+
+            else if (slowAttacks >= 4 && fastAttacks <= 4)
+            {
+                Attack().Shoot(0.5f);
+                fastAttacks++;
+            }
+
+            else if (fastAttacks >= 4 && manyAttacks <= 15)
+            {
+                Attack().Shoot(0.1f);
+                attackTimer = 0.5f;
+                manyAttacks++;
+            }
+
+            else if (manyAttacks >= 15 && fastAttacks <= 8)
+            {
+                Attack().Shoot(0.5f);
+                fastAttacks++;
+            }
+
+            else if (fastAttacks >= 8) 
+            {
+                attackTimer = 1f;
+
+                slowAttacks = 0;
+                fastAttacks = 0;
+                manyAttacks = 0;
+            }
 
             timeToAttack = attackTimer;
         }
@@ -39,9 +75,9 @@ public class Boss : MonoBehaviour
         }
     }
 
-    private void Attack() 
+    private BossProjectile Attack() 
     {
-        Instantiate(enemyProjectile, shootingLocation.transform.position, Quaternion.identity);
+        return Instantiate(enemyProjectile, shootingLocation.transform.position, Quaternion.identity).GetComponent<BossProjectile>();
     }
 
     private void OnTriggerEnter(Collider col)

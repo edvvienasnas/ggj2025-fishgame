@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossProjectile : MonoBehaviour
 {
-    [SerializeField] private float speed;
+    [SerializeField] private float baseSpeed;
     [SerializeField] private float timeToDeath = 5f;
 
     private Player player;
@@ -25,6 +25,11 @@ public class BossProjectile : MonoBehaviour
         }
 
 
-        transform.Translate(Vector3.forward * speed);
+        transform.Translate(Vector3.forward * baseSpeed);
+    }
+
+    public void Shoot(float speed) 
+    {
+        baseSpeed = speed;
     }
 }
