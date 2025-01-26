@@ -163,7 +163,6 @@ public class Player : MonoBehaviour
     {
         if (col.gameObject.tag == "Boss Projectile" && !isFalling) 
         {
-            Debug.Log("player hit");
             StartCoroutine(DropToBottom());
         }
     }

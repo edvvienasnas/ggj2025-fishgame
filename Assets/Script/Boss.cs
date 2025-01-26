@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
@@ -40,7 +41,6 @@ public class Boss : MonoBehaviour
         hpSlider.value = hp;
 
         //intro
-        shakeAnim.Play();
         introScream.Play();
     }
 
@@ -90,7 +90,11 @@ public class Boss : MonoBehaviour
         if (hp <= 0) 
         {
             timeToAttack = 999;
-            deathScream.Play();
+            deathScream.volume = 2;
+            if(!deathScream.isPlaying) deathScream.Play();
+
+            transform.position = new Vector3(transform.position.x, transform.position.y - 1 * Time.deltaTime, transform.position.z);
+            if (transform.position.y <= 0) SceneManager.LoadSceneAsync("Ending");
             //Destroy(this.gameObject);
         }
     }

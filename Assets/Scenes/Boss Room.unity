@@ -402,7 +402,7 @@ MonoBehaviour:
   shootingLocation: {fileID: 1453588082}
   shakeAnim: {fileID: 32898062}
   hpSlider: {fileID: 491130910}
-  hp: 100
+  hp: 5
   attackTimerSlow: 0.5
   attackTimerFast: 0.1
   attackFast: 0.5
