@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject projectile;
     [SerializeField] private Animator animator;
 
+    [SerializeField] private Image damageIndicator;
     [SerializeField] private Slider hpSlider;
     [SerializeField] private Slider mpSlider;
     [SerializeField] private float hp = 10;
@@ -116,8 +117,22 @@ public class Player : MonoBehaviour
         // drown
         if (!bubble.activeSelf)
         {
+            if (!damageIndicator.gameObject.activeSelf)
+            {
+                damageIndicator.gameObject.SetActive(true);
+            }
+
             hpSlider.value = hp;
             hp -= 1 * Time.deltaTime;
+
+
+        }
+        else 
+        {
+            if (damageIndicator.gameObject.activeSelf) 
+            {
+                damageIndicator.gameObject.SetActive(false);
+            }
         }
 
         if (hp <= 0) 
