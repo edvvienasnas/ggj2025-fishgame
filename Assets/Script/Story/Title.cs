@@ -5,9 +5,30 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
+    [SerializeField] private AudioSource audio;
+
+    private float timeToStart = 1.5f;
+
+    bool startIsPressed;
+
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1")) 
+        if (!startIsPressed)
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                startIsPressed = true;
+
+                audio.Play();
+            }
+        }
+
+        if (startIsPressed) 
+        {
+            timeToStart -= Time.deltaTime;
+        }
+
+        if (timeToStart <= 0) 
         {
             SceneManager.LoadSceneAsync("Intro");
         }

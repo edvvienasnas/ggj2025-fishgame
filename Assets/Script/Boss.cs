@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
 {
+    [SerializeField] private AudioSource introScream;
+    [SerializeField] private AudioSource attackScream;
+    [SerializeField] private AudioSource deathScream;
+    [SerializeField] private AudioSource shoot;
     [SerializeField] private GameObject enemyProjectile;
     [SerializeField] private GameObject shootingLocation;
     [SerializeField] private Animation shakeAnim;
@@ -34,6 +38,10 @@ public class Boss : MonoBehaviour
 
         hpSlider.maxValue = hp;
         hpSlider.value = hp;
+
+        //intro
+        shakeAnim.Play();
+        introScream.Play();
     }
 
     private void Update()
@@ -81,12 +89,15 @@ public class Boss : MonoBehaviour
         // Die
         if (hp <= 0) 
         {
-            Destroy(this.gameObject);
+            timeToAttack = 999;
+            deathScream.Play();
+            //Destroy(this.gameObject);
         }
     }
 
     private BossProjectile Attack() 
     {
+        shoot.Play();
         return Instantiate(enemyProjectile, shootingLocation.transform.position, Quaternion.identity).GetComponent<BossProjectile>();
     }
 
@@ -101,6 +112,11 @@ public class Boss : MonoBehaviour
 
             hp -= 1;
             hpSlider.value = hp;
+
+            if (!attackScream.isPlaying && hp > 0)
+            {
+                attackScream.Play();
+            }
         }
     }
 }

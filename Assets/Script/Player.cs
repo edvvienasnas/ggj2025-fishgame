@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] AudioSource shoot;
+    [SerializeField] AudioSource pop;
+
     [SerializeField] private GameObject camera;
     [SerializeField] private GameObject shootingPoint;
     [SerializeField] private GameObject bubble;
@@ -102,6 +105,10 @@ public class Player : MonoBehaviour
             // Shoot projectile
             if (Input.GetButtonDown("Fire1"))
             {
+                //if (!shoot.isPlaying) 
+                //{
+                    shoot.Play();
+                //}
                 Instantiate(projectile, shootingPoint.transform.position, Quaternion.identity);
             }
         }
@@ -126,6 +133,7 @@ public class Player : MonoBehaviour
         animator.SetTrigger("isFalling");
 
         bubble.SetActive(false);
+        pop.Play();
 
         while (transform.position.y > 0.1f) 
         {

@@ -58,7 +58,7 @@ public class Intro : MonoBehaviour
 
         bubble.SetActive(true);
 
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(1.5f);
 
         SceneManager.LoadSceneAsync("Boss Room");
 
