@@ -11,8 +11,17 @@ public class Boss : MonoBehaviour
     [SerializeField] private Slider hpSlider;
     [SerializeField] private float hp = 100;
 
-    [SerializeField] float attackTimer = 3;
+    [SerializeField] float attackTimerSlow = 1;
+    float attackTimer;
+    [SerializeField] float attackTimerFast = 0.5f;
+    [SerializeField] float attackFast = 0.1f;
+    [SerializeField] float attackSlow = 0.5f;
     private float timeToAttack;
+
+    [SerializeField] private int slowAttackAmount;
+    [SerializeField] private int fastAttackAmount;
+    [SerializeField] private int manyAttacksAmount;
+    [SerializeField] private int fastAttackAmountTwo;
 
     private int slowAttacks;
     private int fastAttacks;
@@ -20,7 +29,8 @@ public class Boss : MonoBehaviour
 
     private void Start()
     {
-        timeToAttack = attackTimer;
+        timeToAttack = attackTimerSlow;
+        attackTimer = timeToAttack;
 
         hpSlider.maxValue = hp;
         hpSlider.value = hp;
@@ -31,34 +41,34 @@ public class Boss : MonoBehaviour
         timeToAttack -= Time.deltaTime;
         if (timeToAttack <= 0) 
         {
-            if (slowAttacks < 4)
+            if (slowAttacks < slowAttackAmount)
             {
                 Attack();
                 slowAttacks++;
             }
 
-            else if (slowAttacks >= 4 && fastAttacks <= 4)
+            else if (slowAttacks >= slowAttackAmount && fastAttacks <= fastAttackAmount)
             {
-                Attack().Shoot(0.5f);
+                Attack().Shoot(attackFast);
                 fastAttacks++;
             }
 
-            else if (fastAttacks >= 4 && manyAttacks <= 15)
+            else if (fastAttacks >= fastAttackAmount && manyAttacks <= manyAttacksAmount)
             {
-                Attack().Shoot(0.1f);
-                attackTimer = 0.5f;
+                Attack().Shoot(attackSlow);
+                attackTimer = attackTimerFast;
                 manyAttacks++;
             }
 
-            else if (manyAttacks >= 15 && fastAttacks <= 8)
+            else if (manyAttacks >= manyAttacksAmount && fastAttacks <= fastAttackAmountTwo)
             {
-                Attack().Shoot(0.5f);
+                Attack().Shoot(attackFast);
                 fastAttacks++;
             }
 
-            else if (fastAttacks >= 8) 
+            else if (fastAttacks >= fastAttackAmountTwo) 
             {
-                attackTimer = 1f;
+                attackTimer = attackTimerSlow;
 
                 slowAttacks = 0;
                 fastAttacks = 0;
