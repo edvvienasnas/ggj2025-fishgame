@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     [SerializeField] AudioSource shoot;
     [SerializeField] AudioSource pop;
 
+    [SerializeField] GameObject gameOver;
+
     [SerializeField] private GameObject camera;
     [SerializeField] private GameObject shootingPoint;
     [SerializeField] private GameObject bubble;
@@ -24,7 +26,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float dropSpeed;
 
+    private bool hasDrowned;
     private bool isFalling;
+
+    private float deathTimer = 4f;
 
     private void Start()
     {
@@ -41,7 +46,7 @@ public class Player : MonoBehaviour
         Vector3 horizontal = new Vector3();
 
         // Move player
-        if (!isFalling) 
+        if (!isFalling && hp > 0) 
         {
             animator.SetFloat("Horizontal", Input.GetAxisRaw("Horizontal"));
 
@@ -137,8 +142,24 @@ public class Player : MonoBehaviour
 
         if (hp <= 0) 
         {
-            var scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
+            if (!hasDrowned) 
+            {
+                animator.SetTrigger("hasDrowned");
+                hasDrowned = true;
+            }
+
+            deathTimer -= Time.deltaTime;
+
+            if (deathTimer <= 0) 
+            {
+                gameOver.SetActive(true);
+
+                if (Input.GetButtonDown("Fire1")) 
+                {
+                    var scene = SceneManager.GetActiveScene();
+                    SceneManager.LoadScene(scene.name);
+                }
+            }
         }
     }
 
@@ -176,7 +197,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Boss Projectile" && !isFalling) 
+        if (col.gameObject.tag == "Boss Projectile" && !isFalling && hp > 0) 
         {
             StartCoroutine(DropToBottom());
         }
