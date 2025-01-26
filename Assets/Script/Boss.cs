@@ -107,7 +107,7 @@ public class Boss : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Player Projectile") 
+        if (col.gameObject.tag == "Player Projectile" && hp > 0) 
         {
             if (!shakeAnim.isPlaying) 
             {
